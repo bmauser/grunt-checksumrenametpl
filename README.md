@@ -28,8 +28,8 @@ checksumrenametpl: {
 
 #### This task will:
 1. Calculate md5 checksum of `build/js/js.min.js` (let's say that checksum is `ad6466b2aaf7e9c9ba0494df9c813c13`).
-2. Move `build/js/js.min.js` to `www/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js`
-3. Tn `php/templates/main.tpl` file, replace all occurrences of  
+2. Move `build/js/js.min.js` to `www/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js`  
+3. In `php/templates/main.tpl` file, replace all occurrences of  
    `<script type="text/javascript" src="/scripts/js-OLDCHECKSUM.min.js"></script>`  
    with  
    `<script type="text/javascript" src="/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js"></script>`
