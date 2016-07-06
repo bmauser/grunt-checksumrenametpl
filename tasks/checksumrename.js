@@ -41,40 +41,45 @@ module.exports = function (grunt) {
         // updates replaceFile content
         var updateReplaceFile = function (replaceFile, replaceTpl, checksum, placeholder) {
 
-            // read replaceFile
-            var replaceFileContent = fs.readFileSync(replaceFile).toString();
-            var updateFileContent;
+            var replaceFiles = grunt.file.expand(replaceFile);
 
-            var regexp = new RegExp(checksumPattern, 'g');
-            var checksumPos = [];
-            var res;
+            replaceFiles.forEach (function (replaceFile) {
 
-            // try to find all checksums inside the replaceFile
-            while ((res = regexp.exec(replaceFileContent)) !== null) {
-                checksumPos.push(res.index);
-            }
+                // read replaceFile
+                var replaceFileContent = fs.readFileSync(replaceFile).toString();
+                var updateFileContent;
 
-            if (checksumPos.length){
+                var regexp = new RegExp(checksumPattern, 'g');
+                var checksumPos = [];
+                var res;
 
-                // make replacement from replaceTpl
-                var replaceStr = replaceTpl.replace(placeholder, checksum);
+                // try to find all checksums inside the replaceFile
+                while ((res = regexp.exec(replaceFileContent)) !== null) {
+                    checksumPos.push(res.index);
+                }
 
-                for (var i = 0; i < checksumPos.length; i++) {
-                    var oldChecksum = replaceFileContent.substring(checksumPos[i], checksumPos[i] + checksum.length)
-                    var oldStr = replaceTpl.replace(placeholder, oldChecksum);
+                if (checksumPos.length){
 
-                    if (replaceFileContent.indexOf(oldStr) >= 0){
-                        replaceFileContent = replaceFileContent.replace(oldStr, replaceStr);
-                        updateFileContent = 1;
+                    // make replacement from replaceTpl
+                    var replaceStr = replaceTpl.replace(placeholder, checksum);
+
+                    for (var i = 0; i < checksumPos.length; i++) {
+                        var oldChecksum = replaceFileContent.substring(checksumPos[i], checksumPos[i] + checksum.length)
+                        var oldStr = replaceTpl.replace(placeholder, oldChecksum);
+
+                        if (replaceFileContent.indexOf(oldStr) >= 0){
+                            replaceFileContent = replaceFileContent.replace(oldStr, replaceStr);
+                            updateFileContent = 1;
+                        }
+                    }
+
+                    // write new replaceFile content
+                    if (updateFileContent){
+                        fs.writeFileSync(replaceFile, replaceFileContent);
+                        console.log('Updated: ' + replaceFile);
                     }
                 }
-
-                // write new replaceFile content
-                if (updateFileContent){
-                    fs.writeFileSync(replaceFile, replaceFileContent);
-                    console.log('Updated: ' + replaceFile);
-                }
-            }
+            })
         };
 
         // custom placeholder for checksum

@@ -5,7 +5,7 @@ Useful for for preventing browser to cache old .js or .css files.
 
 ## Getting Started
 ```shell
-npm install grunt-checksumrenametpl
+npm install grunt-checksumrenametpl --save-dev
 ```
 Once the plugin has been installed, it may be enabled inside your `.Gruntfile` with this line of JavaScript:
 
@@ -20,7 +20,7 @@ checksumrenametpl: {
   js: {
       srcFile:     'build/js/js.min.js',
       destFileTpl: 'www/scripts/js-[CHECKSUM].min.js',
-      replaceFile: 'php/templates/main.tpl',
+      replaceFile: ['php/templates/main.tpl'],
       replaceTpl:  'src="/scripts/js-[CHECKSUM].min.js"></script>',
   }
 ```
@@ -41,5 +41,5 @@ checksumrenametpl: {
 #### Params description
 * **`srcFile`** - File to be renamed.
 * **`destFileTpl`** - Template string which define a new name for the `srcFile`. `[CHECKSUM]` will be replaced with md5 hash of the file.
-* **`replaceFile`** - File which content needs to be updated with the new file name.
+* **`replaceFile`** - Files which content needs to be updated with the new file name. You can specify more files here and use grunt globing patterns.
 * **`replaceTpl`** - Template string which define a partition of `replaceFile` content in which `[CHECKSUM]` will be replaced with md5 hash of the file. This can be any string which contains `[CHECKSUM]`.
