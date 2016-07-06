@@ -30,9 +30,9 @@ checksumrenametpl: {
 1. Calculate md5 checksum of `build/js/js.min.js` (let's say that checksum is `ad6466b2aaf7e9c9ba0494df9c813c13`).
 2. Move `build/js/js.min.js` to `www/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js`  
 3. In `php/templates/main.tpl` file, replace all occurrences of  
-   `<script type="text/javascript" src="/scripts/js-OLDCHECKSUM.min.js"></script>`  
+   `src="/scripts/js-OLDCHECKSUM.min.js"></script>`  
    with  
-   `<script type="text/javascript" src="/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js"></script>`
+   `src="/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js"></script>`
    OLDCHECKSUM here can be any md5 checksum which will be replaced with the new one.  
    **Note** that the file name in the HTML page must contain some checksum that will be updated. For the first time you run this task you can put any md5 checksum into the HTML.
 4. Delete all files with an invalid checksum from `www/scripts/` directory.
