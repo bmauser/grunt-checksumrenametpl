@@ -1,6 +1,6 @@
 {
   "name": "grunt-checksumrenametpl",
-  "description": "Inserts checksum into file name and can update temlate file content with the new name. Usefull for preventing browser cacheing of .js or .css files.",
+  "description": "Renames a file with its checksum and can update template file content with the new name. Useful for preventing browser to cache .js or .css files.",
   "version": "0.0.1",
   "keywords": [
     "grunt",
