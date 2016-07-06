@@ -41,5 +41,5 @@ checksumrenametpl: {
 #### Params description
 * **`srcFile`** - File to be renamed.
 * **`destFileTpl`** - Template string which define a new name for the `srcFile`. `[CHECKSUM]` will be replaced with md5 hash of the file.
-* **`replaceFile`** - Files which content needs to be updated with the new file name. You can specify more files here and use grunt globing patterns.
+* **`replaceFile`** - Files which content needs to be updated with the new file name. You can specify more files here and use grunt globbing patterns.
 * **`replaceTpl`** - Template string which define a partition of `replaceFile` content in which `[CHECKSUM]` will be replaced with md5 hash of the file. This can be any string which contains `[CHECKSUM]`.
