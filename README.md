@@ -35,7 +35,7 @@ checksumrenametpl: {
    `<script type="text/javascript" src="/scripts/js-ad6466b2aaf7e9c9ba0494df9c813c13.min.js"></script>`
    OLDCHECKSUM here can be any md5 checksum which will be replaced with the new one.  
    **Note** that the file name in the HTML page must contain some checksum that will be updated. For the first time you run this task you can put any md5 checksum into the HTML.
-4. Delete all files with an invalid checksum from folder `www/scripts/`.
+4. Delete all files with an invalid checksum from `www/scripts/` directory.
 
 
 #### Params description
