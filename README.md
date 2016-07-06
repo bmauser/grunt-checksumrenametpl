@@ -42,5 +42,4 @@ checksumrenametpl: {
 * **`srcFile`** - File to be renamed.
 * **`destFileTpl`** - Template string which define a new name for the `srcFile`. `[CHECKSUM]` will be replaced with md5 hash of the file.
 * **`replaceFile`** - File which content needs to be updated with the new file name.
-* **`replaceTpl`** - Template string which define a partition of `replaceFile` content in which `[CHECKSUM]` will be replaced with md5 hash of the file. This can be any string which contains `[CHECKSUM]`.  
-This value must not start or end with `[CHECKSUM]`. This is invalid: `'[CHECKSUM].min.js'`.
+* **`replaceTpl`** - Template string which define a partition of `replaceFile` content in which `[CHECKSUM]` will be replaced with md5 hash of the file. This can be any string which contains `[CHECKSUM]`.
