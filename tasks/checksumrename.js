@@ -4,11 +4,13 @@ module.exports = function (grunt) {
 
     grunt.registerMultiTask('checksumrenametpl', 'Rename file', function () {
 
-        //grunt.log.writeln(JSON.stringify(this.data, null, 2));
+        // grunt.log.writeln(JSON.stringify(this.data, null, 2));
 
         var checksumAlg     = 'md5'; // for crypto.createHash
         var checksumPattern = '[a-f0-9]{32}'; // for md5
         var placeholder     = '[CHECKSUM]';
+
+        var fs = require('fs');
 
         // function that deleteInvalidChecksumFile files with invalid checksum in the name
         var deleteInvalidChecksumFiles = function (destFileTpl, checksumPattern, checksum, placeholder) {
@@ -18,7 +20,7 @@ module.exports = function (grunt) {
             var filesInDestDir = fs.readdirSync(destDirName);
 
             for (var i = 0; i < filesInDestDir.length; i++){
-                var destNameParts = destFileName.split(placeholder); // 'js-[CHECKSUM].min.js' => ['www/js/js-', '.min.js']
+                var destNameParts = destFileName.split(placeholder); // 'js-[CHECKSUM].min.js' => ['js-', '.min.js']
                 var fileName = filesInDestDir[i];
                 var filePath = destDirName + '/' + fileName;
 
@@ -28,7 +30,7 @@ module.exports = function (grunt) {
                 });
 
                 // if only checksum left from replace
-                if(new RegExp(checksumPattern).test(fileName) && fileName.length == checksum.length && fileName != checksum){
+                if (new RegExp(checksumPattern).test(fileName) && fileName.length == checksum.length && fileName != checksum){
                     // delete file
                     fs.unlinkSync(filePath);
                     console.log('Deleted: ' + filePath);
@@ -37,7 +39,7 @@ module.exports = function (grunt) {
         };
 
         // updates replaceFile content
-        var updateReplaceFile = function(replaceFile, replaceTpl, checksum, placeholder){
+        var updateReplaceFile = function (replaceFile, replaceTpl, checksum, placeholder) {
 
             // read replaceFile
             var replaceFileContent = fs.readFileSync(replaceFile).toString();
@@ -52,36 +54,34 @@ module.exports = function (grunt) {
                 checksumPos.push(res.index);
             }
 
-            if(checksumPos.length){
+            if (checksumPos.length){
 
                 // get substrings before and after [CHECKSUM] from the replaceTpl
                 var tagsArr = replaceTpl.split(placeholder);
-                if(tagsArr.length != 2)
+                if (tagsArr.length != 2)
                     throw new Error('Invalid replaceTpl:' + replaceTpl);
 
                 var tagBeforeChksum = tagsArr[0];
                 var tagAfterChksum  = tagsArr[1];
 
                 // replace checksum in replaceFile
-                for (var i=0; i<checksumPos.length; i++){
-                    if((replaceFileContent.substring(checksumPos[i] - tagBeforeChksum.length, checksumPos[i]) == tagBeforeChksum) &&
+                for (var i = 0; i < checksumPos.length; i++) {
+                    if ((replaceFileContent.substring(checksumPos[i] - tagBeforeChksum.length, checksumPos[i]) == tagBeforeChksum) &&
                        (replaceFileContent.substring(checksumPos[i] + checksum.length, checksumPos[i] + checksum.length + tagAfterChksum.length) == tagAfterChksum) &&
                         replaceFileContent.substring(checksumPos[i], checksumPos[i] + checksum.length) != checksum){
-                       // replace checksum
-                       replaceFileContent = replaceFileContent.substring(0, checksumPos[i]) + checksum + replaceFileContent.substring(checksumPos[i] + checksum.length);
-                       updateFileContent = 1;
-                   }
+                        // replace checksum
+                        replaceFileContent = replaceFileContent.substring(0, checksumPos[i]) + checksum + replaceFileContent.substring(checksumPos[i] + checksum.length);
+                        updateFileContent = 1;
+                    }
                 }
 
                 // write new replaceFile content
-                if(updateFileContent){
+                if (updateFileContent){
                     fs.writeFileSync(replaceFile, replaceFileContent);
                     console.log('Updated: ' + replaceFile);
                 }
             }
         };
-
-        var fs  = require('fs');
 
         // custom placeholder for checksum
         if (this.data.placeholder)
@@ -96,7 +96,7 @@ module.exports = function (grunt) {
         // get destFile name
         var destFile = this.data.destFileTpl.replace(placeholder, checksum);
 
-        if(grunt.file.exists(destFile)){
+        if (grunt.file.exists(destFile)){
             console.log('Done nothing. File with current checksum already exists: ' + destFile);
             return; // exit
         }
@@ -105,7 +105,7 @@ module.exports = function (grunt) {
         fs.renameSync(this.data.srcFile, destFile);
         console.log('Created: ' + destFile);
 
-        if(this.data.replaceFile){
+        if (this.data.replaceFile){
             // update replaceFile content
             updateReplaceFile(this.data.replaceFile, this.data.replaceTpl, checksum, placeholder);
         }
