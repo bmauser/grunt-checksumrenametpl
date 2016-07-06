@@ -21,7 +21,7 @@ checksumrenametpl: {
       srcFile:     'build/js/js.min.js',
       destFileTpl: 'www/scripts/js-[CHECKSUM].min.js',
       replaceFile: 'php/templates/main.tpl',
-      replaceTpl:  '<script type="text/javascript" src="/scripts/js-[CHECKSUM].min.js"></script>',
+      replaceTpl:  'src="/scripts/js-[CHECKSUM].min.js"></script>',
   }
 ```
 
@@ -42,4 +42,5 @@ checksumrenametpl: {
 * **`srcFile`** - File to be renamed.
 * **`destFileTpl`** - Template string which define a new name for the `srcFile`. `[CHECKSUM]` will be replaced with md5 hash of the file.
 * **`replaceFile`** - File which content needs to be updated with the new file name.
-* **`replaceTpl`** - Template string which define partition of `replaceFile` which will be updated. `[CHECKSUM]` will be replaced with md5 hash of the file. `replaceTpl` must not start or end with `[CHECKSUM]`. This is invaid: `'[CHECKSUM].min.js'`
+* **`replaceTpl`** - Template string which define a partition of `replaceFile` content in which `[CHECKSUM]` will be replaced with md5 hash of the file. This can be any string which contains `[CHECKSUM]`.  
+This value must not start or end with `[CHECKSUM]`. This is invalid: `'[CHECKSUM].min.js'`.
