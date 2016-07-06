@@ -56,21 +56,15 @@ module.exports = function (grunt) {
 
             if (checksumPos.length){
 
-                // get substrings before and after [CHECKSUM] from the replaceTpl
-                var tagsArr = replaceTpl.split(placeholder);
-                if (tagsArr.length != 2)
-                    throw new Error('Invalid replaceTpl:' + replaceTpl);
+                // make replacement from replaceTpl
+                var replaceStr = replaceTpl.replace(placeholder, checksum);
 
-                var tagBeforeChksum = tagsArr[0];
-                var tagAfterChksum  = tagsArr[1];
-
-                // replace checksum in replaceFile
                 for (var i = 0; i < checksumPos.length; i++) {
-                    if ((replaceFileContent.substring(checksumPos[i] - tagBeforeChksum.length, checksumPos[i]) == tagBeforeChksum) &&
-                       (replaceFileContent.substring(checksumPos[i] + checksum.length, checksumPos[i] + checksum.length + tagAfterChksum.length) == tagAfterChksum) &&
-                        replaceFileContent.substring(checksumPos[i], checksumPos[i] + checksum.length) != checksum){
-                        // replace checksum
-                        replaceFileContent = replaceFileContent.substring(0, checksumPos[i]) + checksum + replaceFileContent.substring(checksumPos[i] + checksum.length);
+                    var oldChecksum = replaceFileContent.substring(checksumPos[i], checksumPos[i] + checksum.length)
+                    var oldStr = replaceTpl.replace(placeholder, oldChecksum);
+
+                    if (replaceFileContent.indexOf(oldStr) >= 0){
+                        replaceFileContent = replaceFileContent.replace(oldStr, replaceStr);
                         updateFileContent = 1;
                     }
                 }
